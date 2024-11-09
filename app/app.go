@@ -3,6 +3,8 @@ package app
 import (
 	"net/http"
 
+	"github.com/KIVUOS1999/easyApi/configs"
+	"github.com/KIVUOS1999/easyApi/constants"
 	"github.com/KIVUOS1999/easyLogs/pkg/log"
 	"github.com/gorilla/mux"
 )
@@ -10,25 +12,36 @@ import (
 type handlerFunc func(ctx *Context) (interface{}, error)
 
 type app struct {
-	muxx *mux.Router
+	muxx    *mux.Router
+	configs *configs.Config
 }
 
-func New() *app {
+func New(args ...any) *app {
+	configPath := "./configs/.env"
+	if len(args) > 0 {
+		configPath = args[0].(string)
+	}
+
 	m := mux.NewRouter()
+	config := configs.New(configPath)
 
 	app := app{
-		muxx: m,
+		muxx:    m,
+		configs: config,
 	}
 
 	return &app
 }
 
 func (a *app) Start() {
-	port := ":8000"
+	port := a.configs.Get(constants.Address)
 
 	log.Info("Starting server:", port)
 
-	http.ListenAndServe(port, a.muxx)
+	err := http.ListenAndServe(port, a.muxx)
+	if err != nil {
+		log.Error(err.Error())
+	}
 }
 
 func (a *app) registerRoutes(path string, method string, handler handlerFunc) {
