@@ -12,8 +12,8 @@ import (
 type handlerFunc func(ctx *Context) (interface{}, error)
 
 type app struct {
-	muxx    *mux.Router
-	configs *configs.Config
+	Muxx    *mux.Router
+	Configs *configs.Config
 }
 
 func New(args ...any) *app {
@@ -26,26 +26,26 @@ func New(args ...any) *app {
 	config := configs.New(configPath)
 
 	app := app{
-		muxx:    m,
-		configs: config,
+		Muxx:    m,
+		Configs: config,
 	}
 
 	return &app
 }
 
 func (a *app) Start() {
-	port := a.configs.Get(constants.Address)
+	port := a.Configs.Get(constants.Address)
 
 	log.Info("Starting server:", port)
 
-	err := http.ListenAndServe(port, a.muxx)
+	err := http.ListenAndServe(port, a.Muxx)
 	if err != nil {
 		log.Error(err.Error())
 	}
 }
 
 func (a *app) registerRoutes(path string, method string, handler handlerFunc) {
-	a.muxx.HandleFunc(path, a.adapterFunc(handler)).Methods(method)
+	a.Muxx.HandleFunc(path, a.adapterFunc(handler)).Methods(method)
 }
 
 func (a *app) Get(path string, handler handlerFunc) {
