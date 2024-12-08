@@ -44,22 +44,26 @@ func (a *app) Start() {
 	}
 }
 
-func (a *app) registerRoutes(path string, method string, handler handlerFunc) {
-	a.Muxx.HandleFunc(path, a.adapterFunc(handler)).Methods(method)
+func (a *app) registerRoutes(path string, handler handlerFunc, method ...string) {
+	a.Muxx.HandleFunc(path, a.adapterFunc(handler)).Methods(method...)
 }
 
 func (a *app) Get(path string, handler handlerFunc) {
-	a.registerRoutes(path, http.MethodGet, handler)
+	a.registerRoutes(path, handler, http.MethodGet)
 }
 
 func (a *app) Post(path string, handler handlerFunc) {
-	a.registerRoutes(path, http.MethodPost, handler)
+	a.registerRoutes(path, handler, http.MethodPost)
 }
 
 func (a *app) Put(path string, handler handlerFunc) {
-	a.registerRoutes(path, http.MethodPut, handler)
+	a.registerRoutes(path, handler, http.MethodPut)
 }
 
 func (a *app) Delete(path string, handler handlerFunc) {
-	a.registerRoutes(path, http.MethodDelete, handler)
+	a.registerRoutes(path, handler, http.MethodDelete, http.MethodOptions)
+}
+
+func (a *app) Options(path string, handler handlerFunc) {
+	a.registerRoutes(path, handler, http.MethodOptions)
 }

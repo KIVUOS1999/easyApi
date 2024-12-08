@@ -10,6 +10,10 @@ import (
 
 func (a *app) adapterFunc(f handlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")                                 // Allow all origins
+		w.Header().Set("Access-Control-Allow-Methods", "*")                                // Allow specific methods
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-*") // Allow specific headers
+
 		resp := response.Resp{Resp: w, Req: r}
 
 		ctx := Context{

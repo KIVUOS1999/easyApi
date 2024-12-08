@@ -3,6 +3,8 @@ package response
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/KIVUOS1999/easyLogs/pkg/log"
 )
 
 type model struct {
@@ -23,6 +25,11 @@ func (r *Resp) Response() http.ResponseWriter {
 }
 
 func (r *Resp) WriteResponse(resp interface{}) {
+	if r.Req.Method == http.MethodOptions {
+		log.Info("Returning because of method options")
+		return
+	}
+
 	method := r.Req.Method
 	statusCode := http.StatusOK
 

@@ -18,3 +18,7 @@ func (h *Req) Request() *http.Request {
 func (h *Req) Method() string {
 	return h.Req.Method
 }
+
+func (h *Req) GetHeader(key string) string {
+	return h.Req.Header.Get(key)
+}
