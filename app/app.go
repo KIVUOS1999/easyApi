@@ -49,15 +49,15 @@ func (a *app) registerRoutes(path string, handler handlerFunc, method ...string)
 }
 
 func (a *app) Get(path string, handler handlerFunc) {
-	a.registerRoutes(path, handler, http.MethodGet)
+	a.registerRoutes(path, handler, http.MethodGet, http.MethodOptions)
 }
 
 func (a *app) Post(path string, handler handlerFunc) {
-	a.registerRoutes(path, handler, http.MethodPost)
+	a.registerRoutes(path, handler, http.MethodPost, http.MethodOptions)
 }
 
 func (a *app) Put(path string, handler handlerFunc) {
-	a.registerRoutes(path, handler, http.MethodPut)
+	a.registerRoutes(path, handler, http.MethodPut, http.MethodOptions)
 }
 
 func (a *app) Delete(path string, handler handlerFunc) {

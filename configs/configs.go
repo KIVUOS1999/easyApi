@@ -14,6 +14,7 @@ func New(path string) *Config {
 	err := godotenv.Load(path)
 	if err != nil {
 		log.Error("Failed to load config", err.Error())
+		os.Exit(1)
 	}
 
 	log.Info("Config loaded from path", path)

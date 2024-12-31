@@ -14,6 +14,10 @@ func (a *app) adapterFunc(f handlerFunc) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Methods", "*")                                // Allow specific methods
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-*") // Allow specific headers
 
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		resp := response.Resp{Resp: w, Req: r}
 
 		ctx := Context{
